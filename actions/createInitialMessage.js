@@ -5,6 +5,8 @@ const { slackWebClient, createUsersToAtString } = require("../utils");
 module.exports = async () => {
   try {
     const channelId = core.getInput("channel-id");
+    const customMessage = core.getInput("custom-notifier-message");
+    const groupToNotify = core.getInput("group-to-notify");
     const { number, pull_request, repository, sender } = github.context.payload;
     const requestedReviewers = pull_request.requested_reviewers.map(
       (user) => user.login
@@ -18,7 +20,7 @@ module.exports = async () => {
       return null;
     }
 
-    let baseMessage = `*${sender.login}* is requesting your review on <${pull_request._links.html.href}|*${pull_request.title}*>`;
+    let baseMessage = customMessage ? customMessage : `*${sender.login}* is requesting your review on <${pull_request._links.html.href}|*${pull_request.title}*>`;
     if (!!pull_request.body) {
       baseMessage = `${baseMessage}\n>${pull_request.body}`;
     }
@@ -27,7 +29,8 @@ module.exports = async () => {
     const usersToAtString = createUsersToAtString(requestedReviewers);
 
     // DOCS https://api.slack.com/methods/chat.postMessage
-    const text = `${usersToAtString} ${baseMessage}`;
+    const userToAt = usersToAtString ? usersToAtString : `@${groupToNotify}`;
+    const text = `${userToAt} ${baseMessage}`;
     prSlackMsg = await slackWebClient.chat.postMessage({
       channel: channelId,
       text,

@@ -20,6 +20,14 @@ inputs:
     description: "If you would like to notify the thread of a label being applied to a PR, set this."
     required: false
     default: ""
+  custom-notifier-message:
+    description: "You can customize the message that will be posted as your notification"
+    required: false
+    default: ""
+  group-to-notify:
+    description: "The specific group in a channel you want to notify to, ex. @here, do not include @"
+    required: false
+    default: "here"
   slack-users: # id of input
     description: "This is JSON stringified array of the users you would like to be able to notify via slack when they are requested to review a PR. The format should be [{ github_username: string, slack_id: string,  slack_webhook: string }]"
     required: true
