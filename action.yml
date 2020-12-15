@@ -16,16 +16,21 @@ inputs:
   github-token:
     description: "Personal access token with repository rights."
     required: true
+  # we may not need this
   label-name-to-watch-for:
     description: "If you would like to notify the thread of a label being applied to a PR, set this."
     required: false
     default: ""
+  labels-for-slack-groups:
+    description: "If you would like to notify specific group on slack for specific labels, set here. The format should be [{label_name: string, slack_group: string}]"
+    required: false
+    default: "[]"
   custom-notifier-message:
     description: "You can customize the message that will be posted as your notification"
     required: false
     default: ""
   group-to-notify:
-    description: "The specific group in a channel you want to notify to, ex. @here, do not include @"
+    description: "The specific group in a channel you want to notify when there's no reviewer added while creating a PR, ex. @here, do not include @"
     required: false
     default: "here"
   slack-users: # id of input

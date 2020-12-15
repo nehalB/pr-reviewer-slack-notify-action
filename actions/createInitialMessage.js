@@ -20,7 +20,9 @@ module.exports = async () => {
       return null;
     }
 
-    let baseMessage = customMessage ? customMessage : `*${sender.login}* is requesting your review on <${pull_request._links.html.href}|*${pull_request.title}*>`;
+    let baseMessage = customMessage ?
+        `${customMessage} \nsender: *${sender.login}*\n<${pull_request._links.html.href}|*${pull_request.title}*>`
+        : `*${sender.login}* is requesting your review on <${pull_request._links.html.href}|*${pull_request.title}*>`;
     if (!!pull_request.body) {
       baseMessage = `${baseMessage}\n>${pull_request.body}`;
     }
@@ -29,6 +31,7 @@ module.exports = async () => {
     const usersToAtString = createUsersToAtString(requestedReviewers);
 
     // DOCS https://api.slack.com/methods/chat.postMessage
+    // notify group only when no reviewer is added while creating a PR
     const userToAt = usersToAtString ? usersToAtString : `@${groupToNotify}`;
     const text = `${userToAt} ${baseMessage}`;
     prSlackMsg = await slackWebClient.chat.postMessage({
