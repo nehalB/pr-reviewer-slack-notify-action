@@ -41,8 +41,8 @@ module.exports = async () => {
     });
 
     let notificationMessage;
-    labelGroup.forEach((label) => {
-      notificationMessage = notificationMessage + `<@${label.slack_group}>, ${labeler.github_username} added the label ${labelNameToWatchFor} to the PR\n`;
+    groups.forEach((label) => {
+      notificationMessage = notificationMessage + `<@${label.slack_group}>, ${labeler.github_username} added the label ${label.label_name} to the PR\n`;
     });
 
     // const plainText = `<@${author.slack_id}>, ${labeler.github_username} added the label ${labelNameToWatchFor} to your PR`;
